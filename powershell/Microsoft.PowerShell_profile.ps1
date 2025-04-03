@@ -54,4 +54,17 @@ function which ($command) {
     Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
 
+function Use-Java {
+    param ([string]$version)
 
+    $result = jabba use $version 2>&1
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "❌ ERROR: Unable to switch to Java $version. Please check the version"
+        return
+    }
+
+    $JDK_PATH = jabba which $version
+    [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK_PATH, [System.EnvironmentVariableTarget]::User)
+    Write-Output "Switched to Java $version, JAVA_HOME updated: $JDK_PATH"
+}
