@@ -66,7 +66,7 @@ catch {
 	Write-Error "Failed to install Jabba. Error: $_"
 }
 
-if ((Test-Path -Path $PROFILE) -and (Test-Path -Path "$env:USERPROFILE\.jabba" -or (Get-Command jabba -ErrorAction SilentlyContinue)) {
+if ((Test-Path -Path $PROFILE) -and (Test-Path -Path "$env:USERPROFILE\.jabba" -or (Get-Command jabba -ErrorAction SilentlyContinue))) {
     Write-Host "Setup completed successfully. Please restart your PowerShell session to apply changes."
 } else {
     Write-Warning "Setup completed with errors. Please check the error messages above."
