@@ -7,8 +7,8 @@
 . $env:USERPROFILE\.config\powershell\psreadline-profile.ps1
 
 # Fzf
-Import-Module PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
+# Import-Module PSFzf
+# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 # Get theme from profile.ps1 or use a default theme
 function Get-Theme {
@@ -66,5 +66,17 @@ function Use-Java {
 
     $JDK_PATH = jabba which $version
     [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK_PATH, [System.EnvironmentVariableTarget]::User)
+
+    $binPath = Join-Path -Path $JDK_PATH -ChildPath "bin"
+    $currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+
+    if (-not $currentPath.Contains($binPath)) {
+        $newPath = "$currentPath;$binPath"
+        [System.Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::User)
+        Write-Output "Path updated to include Java bin directory: $binPath"
+    } else {
+        Write-Output "Java bin directory already exists in Path: $binPath"
+    }
+
     Write-Output "Switched to Java $version, JAVA_HOME updated: $JDK_PATH"
 }
